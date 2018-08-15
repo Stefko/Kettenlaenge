@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<title>Kettenlänge berechnen</title>
+	<meta name="author" content="Stefan 'Stefko' Kohler">
+	<meta name="copyright" content="(c) 2018 by Lobsterlounge Digital Media Design - https://lobsterlounge.de" />
+	<meta name="description" content="Ein Skript zum Berechnen der korrekten Kettenlänge.">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta name="robots" content="noindex,nofollow">
+	<meta http-equiv="expires" content="43200">
+	<!-- https://iconogen.com -->
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+	<meta name="msapplication-square70x70logo" content="/smalltile.png" />
+	<meta name="msapplication-square150x150logo" content="/mediumtile.png" />
+	<meta name="msapplication-wide310x150logo" content="/widetile.png" />
+	<meta name="msapplication-square310x310logo" content="/largetile.png" />
+	<script>document.addEventListener("touchstart",function(){},!0)</script>
+	<script language="JavaScript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300|Roboto+Mono:100,300" rel="stylesheet">
+	<style type="text/css">
+		
+		*:focus { /* verhindert den blauen Schatten */
+			outline: 0;
+			box-shadow:none;
+		}
+		
+		body {
+			min-height:100vh;
+			font-family: 'Roboto', sans-serif;
+			letter-spacing: 0.1em;
+			background-color: #11a9e2;
+			font-weight: lighter;
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0d86b3), to(#11a9e2));
+		}
+		
+		h1 {
+			margin:10px 0 40px 20px;
+			text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, .1), 0 0 5px rgba(0, 0, 0, .1), 0 1px 3px rgba(0, 0, 0, .3), 0 3px 5px rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .2), 0 20px 20px rgba(0, 0, 0, .15);
+			font: bold 80px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+			color: #fff;
+		}
+		
+		form {
+			max-width:525px;
+			margin: 0 23px;
+			color:#11a9e2;
+			padding: 0px 25px 25px;
+			background: #fff;
+			box-shadow:
+				0px 0px 0px 5px rgba( 255,255,255,0.4 ),
+				10px 10px 10px rgba(0, 0, 0, .15);
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+			display: table;
+			position: static;
+		}
+		
+		form fieldset {
+			border:none;
+			margin:0;
+			padding:0;
+		}
+		
+		form fieldset.data {
+			margin-top:20px;
+		}
+		
+		form .field {
+			width:100%;
+		}
+		
+		form label {
+			display:block;
+			width:100%;
+			float:right;
+			text-shadow: 1px 1px 1px #bbb;
+		}
+		
+		form label input {
+			float:right;
+    		color:#11a9e2;
+			background: #f5f5f5;
+    		font-size: 0.8rem;
+    		-moz-border-radius: 3px;
+    		-webkit-border-radius: 3px;
+    		border-radius: 3px;
+    		border: none;
+    		padding: 13px 10px;
+    		width: 200px;
+    		margin-bottom: 20px;
+    		box-shadow: inset 0px 2px 3px rgba( 0,0,0,0.1 );
+    		clear: both;
+		}
+
+		input:focus {
+    		background: #fff;
+    		box-shadow: 0px 0px 0px 3px rgb(110, 183, 210), inset 0px 2px 3px rgba( 0,0,0,0.2 ), 0px 5px 5px rgba( 0,0,0,0.15 );
+    		outline: none;   
+		}
+
+		form #eingabe {
+			width:90px;
+		}
+		
+		input, select, textarea {
+			margin-left:1rem;
+  			padding: .5rem 1rem; 
+  			font-size: 1rem; 
+  			border: solid 1px #eee;
+  			background: #fff; 
+  			box-sizing: border-box;
+		}
+		
+		sup {
+			color:rgb(0, 180, 230);
+			padding-left:3px;
+		}
+		
+		table {
+			margin:0 20px;
+			border-collapse: collapse;
+			font-family: 'Roboto Mono', monospace;
+			letter-spacing: 0;
+			box-shadow: 10px 10px 10px rgba(0, 0, 0, .15);
+		}
+		
+		td {
+			border:1px solid #eee;
+			padding:10px 20px;
+			font-weight: 100;
+			color:#fff;
+			text-align: center;
+			background: #00b7ea;
+		}
+	
+		thead td {
+			text-align: left;
+			font-weight: 300;
+			font-size: 18px;
+			background: #00b7ea; /* Old browsers */ /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */
+			background: -webkit-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -o-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -webkit-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -o-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: linear-gradient(#00b7ea 0%, #009ec3 100%); /* W3C */
+		}
+		
+		tbody td {
+			text-align: center;
+		}
+
+		button {
+  			display: block;
+  			height: 50px;
+  			width: 200px;
+			cursor:pointer;
+  			/*TYPE*/
+  			color: #fff;
+  			font: 17px/50px Helvetica, Verdana, sans-serif;
+  			text-decoration: none;
+  			text-align: center;
+  			text-transform: uppercase;
+			box-shadow: 10px 10px 10px rgba(0, 0, 0, .15);
+  			/*GRADIENT*/  
+  			background: #00b7ea; /* Old browsers */ /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */
+			background: -webkit-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -o-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -webkit-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: -o-linear-gradient(#00b7ea 0%, #009ec3 100%);
+			background: linear-gradient(#00b7ea 0%, #009ec3 100%); /* W3C */
+				-webkit-transition: all 0.5s ease;
+    		transition: all 0.5s ease;
+		}
+		
+		button.small {
+  			height: 30px;
+  			width: 150px;
+  			/*TYPE*/
+  			font: 13px/30px Helvetica, Verdana, sans-serif;
+		}
+		
+		button:hover {
+  			/*TYPE*/
+  			color: white;
+			box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
+  			/*GRADIENT*/  
+  			background: #00b7ea; /* Old browsers */ /* FF3.6+ */ /* Chrome,Safari4+ */ /* Chrome10+,Safari5.1+ */ /* Opera 11.10+ */ /* IE10+ */
+			background: -webkit-linear-gradient(#009ec3 0%, #00b7ea 100%);
+			background: -o-linear-gradient(#009ec3 0%, #00b7ea 100%);
+			background: linear-gradient(#009ec3 0%, #00b7ea 100%);
+			background: -webkit-linear-gradient(#009ec3 0%, #00b7ea 100%);
+			background: -o-linear-gradient(#009ec3 0%, #00b7ea 100%);
+			background: linear-gradient(#009ec3 0%, #00b7ea 100%); /* W3C */
+				-webkit-transition: all 0.5s ease;
+    		transition: all 0.5s ease;
+		}
+		
+		fieldset button {
+			margin:10px 0;
+			box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
+		}
+		
+		fieldset button:hover {
+			box-shadow: 2px 2px 2px rgba(0, 0, 0, .15);
+		}
+		
+		.accordion {
+    		cursor: pointer;
+		}
+
+		.active, .accordion:hover {
+    		background-color: #ccc;
+		}
+
+		.accordion:before {
+		    content: '\002B';
+		    font-weight: bold;
+			padding-right:5px;
+		}
+		
+		.active:before {
+		    content: "\2212";
+		}
+		
+		.panel {
+		    max-height: 0;
+		    overflow: hidden;
+		    transition: max-height 0.2s ease-out;
+		}
+		
+		.todo {color: red !important;}
+		
+		img {
+			max-width:100%;
+		}
+		
+		@media (min-width:100px) and (max-width:767px) {
+			
+			h1 {
+				font: bold 50px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+			
+			form #usercount,
+			form #userprefix,
+			form #pwlength{
+				width:90%;
+			}
+			
+			form label,
+			form label input {
+				float:none;
+				display:block
+			}
+			
+			form label input {
+				margin-top:10px;
+			}
+			
+			table {
+				width:85vw;
+				margin-right:20px;
+			}
+			
+			td {
+				font-weight: 300;
+			}
+			
+			td.responsive {
+				display:none;
+			}
+		}
+			
+	</style>
+	<script language="JavaScript">
+		<!-- vor alten Browsern verstecken
+		function test(eingabe) {
+			Eingabe = eingabe;
+			zahl = parseFloat(eingabe);
+			if (isNaN(zahl)) zahlString = ""
+			else zahlString = new String(zahl);
+			if (eingabe.length != zahlString.length) {
+				alert("Eingabe nicht korrekt." + (Eingabe));
+				KeineZahl = true;
+			} else(KeineZahl = false);
+			return (dispnum(zahlString));
+		}
+		// -->
+
+	</script>
+	<script language="javascript">
+		<!-- ;
+		function Ausgabe() {
+			Kl = Kettenlenge(document.data.RiZ.value, document.data.KbZ.value, document.data.KeStLe.value);
+			//alert("Kettenlänge ungerundet: "+(Kl));
+			Kl = parseInt(Kl);
+			//alert("Kettenlänge Integer: "+(Kl));
+			if (Kl % 2 != 0) {
+				Kl = Kl + 1
+			};
+			Klcm = Kl * 1.275;
+			Klcm = dispnum(Klcm);
+			alert("\n Kettenlänge = " + (Kl) + " Glieder\n Entspricht = " + (Klcm) + " cm" + "\n\n Das Ergebnis gilt für Schaltungsröllchen mit 10 Zähnen!" + "\n Für Schaltungenröllchen mit 11 Zähnen muß die Kettenlänge um zwei Glieder verlängert werden, für Schaltungsröllchen mit 12 Zähnen vier Glieder!");
+		}
+
+		function Kettenlenge(x1, x2, x3) {
+			x = dispnum(0.157 * x3 + x1 / 2 + x2 / 2 + 2);
+			return (x);
+		}
+
+		function dispnum(x) {
+			x = Math.floor(x * 10) / 10; // give me two decimal places
+			return (x);
+		}
+
+		function compute() // the main routine
+		{
+			fehler = 0;
+			h = test(document.data.RiZ.value); // test auf Zahl
+			if (KeineZahl == false) {
+				//alert("fehler : " +( fehler));
+				if (h <= 5) {
+					alert(dispnum(h) + " Zähne?  Das ist sehr klein! \n\n Versuch es noch einmal!");
+					fehler = 1;
+				}
+				if (h >= 50) {
+					alert(dispnum(h) + " Zähne? Das ist sehr groß!\n\n Versuch es noch einmal!");
+					fehler = 1;
+				}
+			} else {
+				fehler = 1
+			}
+
+			w = test(document.data.KeStLe.value);
+			if (KeineZahl == false) {
+				// alert("fehler  " +( fehler));
+				if (w <= 10) {
+					alert(dispnum(w) + " mm?  Das ist zu kurz!\n\n Eingabe korrigieren!");
+					fehler = 1;
+				}
+				if (w >= 2000) {
+					alert(dispnum(w) + " mm? Das ist zu lang!\n\n Versuch es noch einmal!");
+					fehler = 1;
+				}
+			} else {
+				fehler = 1
+			}
+
+			// alert("fehler: " +( fehler));
+			if (fehler == 0)
+				Ausgabe();
+
+		}
+		// -->
+
+	</script>
+
+	
+</head>
+
+<body>
+	<h1>Kettenlänge berechnen</h1>
+<!--
+	<h2>ToDo</h2>
+	<ul class="todo">
+		<li><strike>Bild responsive machen</strike></li>
+		<li>Ausgabe via  jQuery</li>
+	</ul>
+-->
+
+	<form action="" method="post" name="data">
+
+		<p>Mit der Kettenstrebenlänge (siehe Bild), der Zähnezahl des größten Kettenblattes und der Zähnezahl der größten Ritzel des Zahnkranzes lässt sich ganz einfach die passende Kettenlänge berechnen.<br>Die Formel ist natürlich für alle Fahrradtypen wie Mountainbikes, Rennrad und Trekking Bikes geeignet. Viel Spass bei Kettenlängen berechnen!
+			<br>Die Schaltwerklänge spielt dabei keine Rolle!</p>
+
+		<p><img src="kettenstrebe.png" title="Kettenstrebenlänge" alt="kettenstrebe.png"></p>
+
+			<fieldset class="data">
+				<div class="field">
+					<label>Kettenstrebenlänge in mm
+						<br>(Mitte Hinterradachse bis Mitte Tretlagerachse):
+						<input id="eingabe" name="KeStLe" type="number" size="4" maxlength="6" value="400" required>
+					</label>
+				</div>
+				<div class="field">
+					<label>Zähnezahl des größten Kettenblattes:
+						<input id="eingabe" name="KbZ" type="number" size="4" maxlength="6" value="53" required>
+					</label>
+				</div>
+				<div class="field">
+					<label>Zähnezahl des größten Ritzels:
+						<input id="eingabe" name="RiZ" type="number" size="4" maxlength="6" value="25" required>
+					</label>
+				</div>
+			</fieldset>
+			<fieldset class="buttons">
+				<button type="submit" value="Berechnung" onclick="compute()">
+					<i class="fab fa-whmcs"></i> berechnen
+				</button>
+			</fieldset>
+
+
+	</form>
+
+<div class="quiz">
+	<ul class="answer">
+		<li data-toggle="modal" data-target="#Answer12">❏ Answer 2: eMBB</li>
+	</ul>
+</div>
+			
+<div class="modal fade correct" id="Answer12" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Answer 2</h4>
+			</div>
+			<div class="modal-body">
+				<p>Yeah, you did it, that's right.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-small" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<p>&nbsp;</p>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+</body>
+
+</html>
